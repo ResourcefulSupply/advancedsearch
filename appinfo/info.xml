@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+	<id>files_advancedsearch</id>
+	<name>Files advanced search</name>
+	<summary>This app adds an input box to filter your files' lists.</summary>
+	<description>This app adds an input box to filter your files' lists</description>
+	<version>1.0.0</version>
+	<licence>agpl</licence>
+	<author mail="cyrpub@bollu.be" >Cyrille Bollu</author>
+	<namespace>Files_AdvancedSearch</namespace>
+	<category>files</category>
+	<types>
+		<filesystem/>
+	</types>
+	<dependencies>
+		<nextcloud min-version="21" max-version="22"/>
+	</dependencies>
+</info>
