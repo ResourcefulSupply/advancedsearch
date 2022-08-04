@@ -22,9 +22,9 @@ These can be combined. Example: ‘tag:finance title:report finance’ searches 
 
 5. `“”` (quotations) are used to specify an exact match for a string of words. Example: ‘brave new world’ returns only results with those three words in that exact sequence.
 
-    ## Additional Guidance
+   ## Additional Guidance
 
-    **Stopping the Active Advanced Search Operator**  
+   **Stopping the Active Advanced Search Operator**  
 6. `,` (comma) is used to stop an active Advanced Search operation and proceed with Nextcloud’s standard full text search. Any words after a comma will not be included in the Advanced Search, unless a new one is activated. Example: ‘tag:projecta, contract’ searches for files tagged with “projecta”, and then stops the active Advanced Search operator, and performs a normal search for the word "contract" anywhere in the file.
 
 **Tips When Combining Advanced Searches**
