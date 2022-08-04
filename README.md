@@ -22,11 +22,14 @@ These can be combined. Example: ‘tag:finance title:report finance’ searches 
 
 3. `“”` (quotations) are used to specify an exact match for a string of words. Example: ‘brave new world’ returns only results with those three words in that exact sequence.
 
-## Stopping the Advanced Search
+## Additional Guidance
 
+**Stopping the Search**
 1. `,` (comma) is used to stop an active Advanced Search operation and proceed with Nextcloud’s standard full text search. Any words after a comma will not be included in the Advanced Search, unless a new one is activated. Example: ‘tag:projecta, contract’ searches for files tagged with “projecta”, and then stops the active Advanced Search operator, and performs a normal search for the word "contract" anywhere in the file.
 
-Note also that excluding a search term or crtieria within an 'any:' criteria is not allowed and doesn't make sense.
+**Tips When Combining Advanced Searches**
+1. **A new Advanced Search operator will end the previous one.** While a comma will end an active search operator, a new Advanced Search operator will also end an active one. Example: the search ‘tag:projecta title:contract’ does not need a comma after “projecta” because the 'title:' operator will end the preivous one. The exception to this rule is when using a Search Operator after ‘any:’, since it is designed to combine searches together.
+2. **How to apply a full text search and a limited WHERE search operator within an ‘any:’ search.** All full text search words must go before the WHERE-based search operator if using an ‘any:’ search. A comma cannot be used in this scenario because it will also turn off the 'any:' function. Here's an example of how to use it: ‘any:legal title:contract’ is correct and will find all files that contain the word “legal” OR have “contract” in the title. Using a comma in this scenario (‘any: title:contract, legal’) will turn off the 'any:' search for the word “legal”, which brings it back to a traditional AND search. 
 
 # Development
 
