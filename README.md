@@ -1,7 +1,7 @@
-# What's Advanced Search
+# Advanced Search
 Advanced Search allows you to search for files using advanced search criteria. This extends Nextcloud’s full text search capabilities (if fulltext_search is enabled) to direct file searches towards a file’s tag or title, use an OR modifier instead of the standard AND, exlcude certain words from search, and find an exact match of a string of words. 
 
-# How to Use Advanced Search
+# How to Use It
 
 The advanced search funtionality can be thought of as two types of searching: specifying WHERE to search, and specifying HOW to search. They can also be combined and used interchangeably. 
 
