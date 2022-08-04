@@ -25,7 +25,7 @@ These can be combined. Example: ‘tag:finance title:report finance’ searches 
 ## Additional Guidance
 
 **Stopping the Active Advanced Search Operator**  
-6. `,` (comma) is used to stop an active Advanced Search operation and proceed with Nextcloud’s standard full text search. Any words after a comma will not be included in the Advanced Search, unless a new one is activated. Example: ‘tag:projecta, contract’ searches for files tagged with “projecta”, and then stops the active Advanced Search operator, and performs a normal search for the word "contract" anywhere in the file.
+ 6. `,` (comma) is used to stop an active Advanced Search operation and proceed with Nextcloud’s standard full text search. Any words after a comma will not be included in the Advanced Search, unless a new one is activated. Example: ‘tag:projecta, contract’ searches for files tagged with “projecta”, and then stops the active Advanced Search operator, and performs a normal search for the word "contract" anywhere in the file.
 
 **Tips When Combining Advanced Searches**
 1. **A new Advanced Search operator will end the previous one.** While a comma will end an active search operator, a new Advanced Search operator will also end an active one. Example: the search ‘tag:projecta title:contract’ does not need a comma after “projecta” because the 'title:' operator will end the preivous one. The exception to this rule is when using a search operator within an ‘any:’ search, since 'any:' is designed to combine searches together.
