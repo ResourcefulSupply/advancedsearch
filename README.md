@@ -5,14 +5,14 @@ Advanced Search allows you to search for files using advanced search criteria. T
 
 The advanced search funtionality can be thought of as two types of searching: specifying WHERE to search, and specifying HOW to search. They can also be combined and used interchangeably. 
 
-## Specifying WHERE to search
+## Specifying *where* to search
 
 1. `tag:` limits the search to the file's tag. Example: ‘tag:finance’ searches for files tagged with “finance”.
 2. `title:` limits the search to the file's title. Example: ‘title:report finance’ searches for files whose titles contain the words “report” and “finance”.
 
 These can be combined. Example: ‘tag:finance title:report finance’ searches for files tagged with "finance" AND whose titles contain the words "report" and "finance".
 
-## Specifying HOW to search
+## Specifying *how* to search
 
 3. `any:` searches for files that match any of the search terms listed. For context, the traditional Nextcloud search uses an AND operator -- meaning that all words in the search must be found in a file. This function converts the search logic into an AND -- where a match from any of the words provided will show the file. 
    - Example 1: ‘any:legal contract’ will return all files containing either "legal" or "contract".
