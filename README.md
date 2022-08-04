@@ -1,75 +1,30 @@
-# What's files_advancedsearch
-files_advancedsearch makes you able to search for files using advanced search criteria.
+# What's Advanced Search
+Advanced Search allows you to search for files using advanced search criteria. This extends Nextcloud’s full text search capabilities (if fulltext_search is enabled) to direct file searches towards a file’s tag or title, use an OR modifier instead of the standard AND, exlcude certain words from search, and find an exact match of a string of words. 
 
-files_advancedsearch supports searching for files based on their title, tags, or content (if 
-fulltext_search is enabled), and any combination of these.
+# How to Use Advanced Search
 
-files_advancedsearch limits its searches to the current folder and its subfolders.
+The advanced search funtionality can be thought of as two types of searching: specifying WHERE to search, and specifying HOW to search. They can also be combined and used interchangeably. 
 
-# Using files_advancedsearch
+## 1. Specifying WHERE to search
 
-## Simple usage
-When enabled, searching for files using Nextcloud's unified search will also trigger an advanced search in
-the current folder and its subfolder.
+1. *‘tag:’* limits the search to the file's tag. Example: ‘tag:finance’ searches for files tagged with “finance”.
+2. *‘title:’* limits the search to the file's title. Example: ‘title:report finance’ searches for files whose titles contain the words “report” and “finance”.
 
-The following criteria are supported:
+These can be combined. Example: ‘tag:finance title:report finance’ searches for files tagged with "finance" AND whose titles contain the words "report" and "finance".
 
-1. 'tag:foo': Searches for files tagged with the 'foo' tag;
-2. 'title:bar': Searches for files having 'bar' in their name;
-3. 'test' (no criteria): Searches for files having 'test' in their name or content, or being tagged with
-the 'test' tag.
+## 2. Specifying HOW to search
 
-You can specify several search terms in a criteria. So, 'tag:foo bar' will search for files tagged with
-both the 'foo' and 'bar' tag.
+1. *‘any:’* searches for files that match any of the search terms listed. For context, the traditional Nextcloud search uses an AND operator -- meaning that all words in the search must be found in a file. This function converts the search logic into an AND -- where a match from any of the words provided will show the file. 
+   - Example 1: ‘any:legal contract’ will return all files containing either "legal" or "contract".
+   - Example 2: ‘any:title:legal contract’ will return all files whose filenames contain either "legal" or "contract".
 
-Search terms with spaces shall be enclosed within double-quotes ('"'). So, while 'title:hello world' will 
-search for files having both 'hello' and 'world' in their name, 'title:"hello world"' will search for files
-having "hello world" exactly in their name; The first search would match a file called 'hello cruel world.md'
-while the second search wouldn't.
+2. *‘ - ’* (minus) searches files that do not contain the word immediately following the minus. This modifier must be used in tandem with at least one other search to prevent overwhelming the search with too many matches. Example: ‘project -complete’  searches for files that contain the word “project” but do not contain the word “complete”.
 
-## Combining criteria
-You can combine your criteria by separating them with a comma (',') or simply by starting a new criteria. In 
-this case, the resulting files will be those that match all specified criteria.
+3. *‘ “” ‘* (quotations) are used to specify an exact match for a string of words. Example: ‘brave new world’ returns only results with those three words in that exact sequence.
 
-Examples:
+## Stopping the Advanced Search
 
-1. 'tag:chore title:groceries' will search for files tagged 'chore' and having groceries in their name. Note
-that 'tag:chore, title:groceries' would return the exact same files;
-2. 'tag:chore, groceries' will search for files tagged 'chore', and having either 'groceries' in their name
-or in their content, or being tagged with 'groceries'. Note that 'groceries tag:chore' (or 'groceries, tag:chore)
-would yield the exact same results.
-
-### Combining criteria with an 'any:' criteria
-By default, combining criteria returns a result that is the intersection of the files matching the various criteria
-(ie: a file must match all criteria to be considered a match for the whole search). You can change this by using
-the 'any:' criteria: In this case a file that matches any of the criteria will be considerd a match for the
-search as a whole.
-
-Examples:
-1. 'any:title:foo bar tag:test' will search for all files having either 'foo' or 'bar' in their title, or being
-tagged with the 'test' tag.
-
-Note that, since a comma stops the scope of a criteria, you cannot use the comma within a 'any:' criteria (eg: 
-'any:title:foo bar, test' will search for files having either 'foo' or 'bar' in their name, and either having
-'test' in their name, or having 'test' in their content, or being tagged with the 'test' tag. It will not search
-for files having either 'foo' or 'bar' in their name, or having 'test' in their name, or 'having 'test' in their
-content, or being tagged 'test'). To workaround this limitation you must place your search terms without criteria
-before your search terms with criteria (So, 'any:test title:foo bar' will solve the issue presented in the previous
-parentheses)
-
-## Excluding files
-You can precede a search term or criteria with a minus sign ('-') to specify that the files must not match
-the specified search term or criteria.
-
-Examples:
-
-1. 'title:hello -world' will search for files having 'hello' in their title but not 'world'
-2. '-title:hello world' will search for files that don't have 'hello' neither 'world' in their name
-
-Note that excluding files is about excluding files from a set of matching files: it cannot be the sole critera of a
-search. So, example 2 here above isn't supported per se and must be combined with another search criteria, for 
-example 'tag:projectA -title:hello world' would search for all files tagged 'projectA' that don't have the words
-'hello' or 'world' in their name.
+1. *“ , “* (comma) is used to stop an active Advanced Search operation and proceed with Nextcloud’s standard full text search. Any words after a comma will not be included in the Advanced Search, unless a new one is activated. Example: ‘tag:projecta, contract’ searches for files tagged with “projecta”, and then stops the active Advanced Search operator, and performs a normal search for the word "contract" anywhere in the file.
 
 Note also that excluding a search term or crtieria within an 'any:' criteria is not allowed and doesn't make sense.
 
