@@ -14,18 +14,18 @@ These can be combined. Example: ‘tag:finance title:report finance’ searches 
 
 ## 2. Specifying HOW to search
 
-1. `any:` searches for files that match any of the search terms listed. For context, the traditional Nextcloud search uses an AND operator -- meaning that all words in the search must be found in a file. This function converts the search logic into an AND -- where a match from any of the words provided will show the file. 
+3. `any:` searches for files that match any of the search terms listed. For context, the traditional Nextcloud search uses an AND operator -- meaning that all words in the search must be found in a file. This function converts the search logic into an AND -- where a match from any of the words provided will show the file. 
    - Example 1: ‘any:legal contract’ will return all files containing either "legal" or "contract".
    - Example 2: ‘any:title:legal contract’ will return all files whose filenames contain either "legal" or "contract".
 
-2. `-` (minus) searches files that do not contain the word immediately following the minus. This modifier must be used in tandem with at least one other search to prevent overwhelming the search with too many matches. Example: ‘project -complete’  searches for files that contain the word “project” but do not contain the word “complete”.
+4. `-` (minus) searches files that do not contain the word immediately following the minus. This modifier must be used in tandem with at least one other search to prevent overwhelming the search with too many matches. Example: ‘project -complete’  searches for files that contain the word “project” but do not contain the word “complete”.
 
-3. `“”` (quotations) are used to specify an exact match for a string of words. Example: ‘brave new world’ returns only results with those three words in that exact sequence.
+5. `“”` (quotations) are used to specify an exact match for a string of words. Example: ‘brave new world’ returns only results with those three words in that exact sequence.
 
 ## Additional Guidance
 
 **Stopping the Active Advanced Search Operator**
-1. `,` (comma) is used to stop an active Advanced Search operation and proceed with Nextcloud’s standard full text search. Any words after a comma will not be included in the Advanced Search, unless a new one is activated. Example: ‘tag:projecta, contract’ searches for files tagged with “projecta”, and then stops the active Advanced Search operator, and performs a normal search for the word "contract" anywhere in the file.
+6. `,` (comma) is used to stop an active Advanced Search operation and proceed with Nextcloud’s standard full text search. Any words after a comma will not be included in the Advanced Search, unless a new one is activated. Example: ‘tag:projecta, contract’ searches for files tagged with “projecta”, and then stops the active Advanced Search operator, and performs a normal search for the word "contract" anywhere in the file.
 
 **Tips When Combining Advanced Searches**
 1. **A new Advanced Search operator will end the previous one.** While a comma will end an active search operator, a new Advanced Search operator will also end an active one. Example: the search ‘tag:projecta title:contract’ does not need a comma after “projecta” because the 'title:' operator will end the preivous one. The exception to this rule is when using a search operator within an ‘any:’ search, since 'any:' is designed to combine searches together.
