@@ -5,9 +5,9 @@
 	<name>Files advanced search</name>
 	<summary>This app adds an input box to filter your files' lists.</summary>
 	<description>This app adds an input box to filter your files' lists</description>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<licence>agpl</licence>
-	<author mail="cyrpub@bollu.be" >Cyrille Bollu</author>
+	<author mail="nithinin2001@gmail.com" >Nithin SR</author>
 	<namespace>Files_AdvancedSearch</namespace>
 	<category>files</category>
 	<types>

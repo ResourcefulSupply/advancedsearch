@@ -5,6 +5,7 @@ declare(strict_types=1);
 /**
  * @copyright 2020 Christoph Wurst <christoph@winzerhof-wurst.at>
  *
+ * @author Nithin SR <nithinin2001@gmail.com>
  * @author Cyrille Bollu <cyrpub@bollu.be>
  * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  * @author Joas Schilling <coding@schilljs.com>
@@ -30,128 +31,80 @@ declare(strict_types=1);
 
 namespace OCA\Files_AdvancedSearch\Search;
 
-use OC\Files\Search\SearchComparison;
-use OC\Files\Search\SearchOrder;
-use OC\Files\Search\SearchQuery;
-use OCP\Files\FileInfo;
-use OCP\Files\IMimeTypeDetector;
-use OCP\Files\IRootFolder;
-use OCP\Files\Search\ISearchComparison;
-use OCP\Files\Node;
-use OCP\Files\Search\ISearchOrder;
+use OCA\Files_AdvancedSearch\AppInfo\Application;
+use OCA\Files_AdvancedSearch\Service\SearchService;
+use OCA\Files_AdvancedSearch\Service\WikipediaArticle;
 use OCP\IL10N;
-use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\Search\IProvider;
 use OCP\Search\ISearchQuery;
 use OCP\Search\SearchResult;
 use OCP\Search\SearchResultEntry;
+use function array_map;
+use function mb_strpos;
+use function mb_substr;
+use function strlen;
 
 class FilesAdvancedSearchSearchProvider implements IProvider {
 
-	/** @var IL10N */
+	/**
+	 * @var IL10N
+	 */
 	private $l10n;
 
-	/** @var IURLGenerator */
-	private $urlGenerator;
+	/**
+	 * @var SearchService
+	 */
+	private $searchService;
 
-	/** @var IMimeTypeDetector */
-	private $mimeTypeDetector;
-
-	/** @var IRootFolder */
-	private $rootFolder;
-
-	public function __construct(
-		IL10N $l10n,
-		IURLGenerator $urlGenerator,
-		IMimeTypeDetector $mimeTypeDetector,
-		IRootFolder $rootFolder
-	) {
+	public function __construct(IL10N $l10n, SearchService $searchService) {
 		$this->l10n = $l10n;
-		$this->urlGenerator = $urlGenerator;
-		$this->mimeTypeDetector = $mimeTypeDetector;
-		$this->rootFolder = $rootFolder;
+		$this->searchService = $searchService;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function getId(): string {
-		return 'files_advancedsearch';
+		return Application::APP_ID;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function getName(): string {
 		return $this->l10n->t('Files advanced search');
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function getOrder(string $route, array $routeParameters): int {
-		// Always at the top when app is enabled
 		return -100;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function search(IUser $user, ISearchQuery $query): SearchResult {
-		$userFolder = $this->rootFolder->getUserFolder($user->getUID());
-		$fileQuery = new SearchQuery(
-			new SearchComparison(ISearchComparison::COMPARE_LIKE, 'name', '%' . $query->getTerm() . '%'),
-			$query->getLimit(),
-			(int)$query->getCursor(),
-			$query->getSortOrder() === ISearchQuery::SORT_DATE_DESC ? [
-				new SearchOrder(ISearchOrder::DIRECTION_DESCENDING, 'mtime'),
-			] : [],
-			$user
+		if (mb_strpos($query->getTerm(), "wiki ") !== 0) {
+			return SearchResult::complete(
+				$this->getName(),
+				[]
+			);
+		}
+
+		$term = mb_substr($query->getTerm(), strlen("wiki "));
+		$offset = $query->getCursor();
+		if ($offset !== null) {
+			$offset = (int) $offset;
+		}
+
+		$result = $this->searchService->search(
+			$term,
+			$offset
 		);
 
 		return SearchResult::paginated(
-			$this->l10n->t('Files advanced search'),
-			array_map(function (Node $result) use ($userFolder) {
-				// Generate thumbnail url
-				$thumbnailUrl = $this->urlGenerator->linkToRouteAbsolute('core.Preview.getPreviewByFileId', ['x' => 32, 'y' => 32, 'fileId' => $result->getId()]);
-				$path = $userFolder->getRelativePath($result->getPath());
-				$link = $this->urlGenerator->linkToRoute(
-					'files.view.index',
-					[
-						'dir' => dirname($path),
-						'scrollto' => $result->getName(),
-					]
+			$this->getName(),
+			array_map(function(WikipediaArticle $article) {
+				return new SearchResultEntry(
+					'',
+					$article->getTitle(),
+					$this->l10n->t('Find more on Wikipedia'),
+					$article->getUrl(),
+					'icon-info'
 				);
-
-				$searchResultEntry = new SearchResultEntry(
-					$thumbnailUrl,
-					$result->getName(),
-					$this->formatSubline($path),
-					$this->urlGenerator->getAbsoluteURL($link),
-					$result->getMimetype() === FileInfo::MIMETYPE_FOLDER ? 'icon-folder' : $this->mimeTypeDetector->mimeTypeIcon($result->getMimetype())
-				);
-				$searchResultEntry->addAttribute('fileId', (string)$result->getId());
-				$searchResultEntry->addAttribute('path', $path);
-				return $searchResultEntry;
-			}, $userFolder->search($fileQuery)),
-			$query->getCursor() + $query->getLimit()
+			}, $result->getArticles()),
+			$result->getOffset()
 		);
-	}
-
-	/**
-	 * Format subline for files
-	 *
-	 * @param string $path
-	 * @return string
-	 */
-	private function formatSubline(string $path): string {
-		// Do not show the location if the file is in root
-		if (strrpos($path, '/') > 0) {
-			$path = ltrim(dirname($path), '/');
-			return $this->l10n->t('in %s', [$path]);
-		} else {
-			return '';
-		}
 	}
 }

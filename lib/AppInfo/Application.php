@@ -27,14 +27,6 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function boot(IBootContext $context): void {
-		$context->injectFn(function (EventDispatcher $eventDispatcher) use ($context) {
-			$eventDispatcher->addListener(
-				'OCA\Files::loadAdditionalScripts',
-				function() {
-					Util::addScript(Self::APP_ID, 'files_advancedsearch');  // adds js/files_advancedsearch.js
-				}
-			);
-        	});
 	}
 
 }
