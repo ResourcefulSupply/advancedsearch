@@ -40,6 +40,7 @@ use OCP\Search\IProvider;
 use OCP\Search\ISearchQuery;
 use OCP\Search\SearchResult;
 use OCP\Search\SearchResultEntry;
+use function OCP\Log\logger;
 use function array_map;
 use function mb_strpos;
 use function mb_substr;
@@ -75,6 +76,7 @@ class FilesAdvancedSearchSearchProvider implements IProvider {
 	}
 
 	public function search(IUser $user, ISearchQuery $query): SearchResult {
+		logger('files_advancedsearch')->warning("----------------------------- The search term is ::",$query->getTerm());
 		return SearchResult::complete(
 			$this->getName(),
 			[]
