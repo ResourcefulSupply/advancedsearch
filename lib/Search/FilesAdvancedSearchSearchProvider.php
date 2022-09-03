@@ -75,6 +75,10 @@ class FilesAdvancedSearchSearchProvider implements IProvider {
 	}
 
 	public function search(IUser $user, ISearchQuery $query): SearchResult {
+		return SearchResult::complete(
+			$this->getName(),
+			[]
+		);
 		if (mb_strpos($query->getTerm(), "wiki ") !== 0) {
 			return SearchResult::complete(
 				$this->getName(),
